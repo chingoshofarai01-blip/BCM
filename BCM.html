@@ -1,0 +1,686 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#211f1b">
+<title>Bloom Cafe | Digital Menu</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #211f1b;
+  color: #f5f3ed;
+  line-height: 1.4;
+}
+
+header {
+  min-height: 190px;
+  padding: 35px 16px;
+  background:
+    linear-gradient(rgba(20,19,16,.55), rgba(20,19,16,.85)),
+    url("https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=80")
+    center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.brand {
+  color: #d8c89b;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+header h1 {
+  font-size: clamp(29px, 6vw, 45px);
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+header p {
+  color: #e0ded7;
+  font-size: 14px;
+}
+
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 22px 12px 35px;
+}
+
+.intro {
+  margin-bottom: 18px;
+}
+
+.intro h2 {
+  font-size: clamp(24px, 5vw, 34px);
+  margin-bottom: 5px;
+}
+
+.intro p {
+  color: #c1beb6;
+  font-size: 14px;
+}
+
+.categories {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin: 18px 0 28px;
+}
+
+.categories button {
+  border: 1px solid #4a4740;
+  background: #121212;
+  color: #f5f3ed;
+  padding: 9px 15px;
+  border-radius: 25px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.categories button.active,
+.categories button:hover {
+  background: #d8c89b;
+  color: #191813;
+}
+
+.menu-section {
+  margin-bottom: 26px;
+  scroll-margin-top: 15px;
+}
+
+.menu-section h2 {
+  font-size: 21px;
+  margin-bottom: 12px;
+  padding-bottom: 7px;
+  border-bottom: 2px solid #8f8057;
+}
+
+/* Three compact photo cards across on phones */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.product {
+  overflow: hidden;
+  background: #121212;
+  border: 1px solid #49453d;
+  border-radius: 12px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.product img {
+  display: block;
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  background: #343027;
+}
+
+.product-content {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.product h3 {
+  font-size: 12px;
+  line-height: 1.25;
+  margin-bottom: 5px;
+  overflow-wrap: anywhere;
+}
+
+.product p {
+  color: #bcbab4;
+  font-size: 10px;
+  line-height: 1.35;
+  margin-bottom: 9px;
+  flex: 1;
+}
+
+.product-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 7px;
+  margin-top: auto;
+}
+
+.price {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.add-btn {
+  width: 100%;
+  border: none;
+  border-radius: 7px;
+  padding: 7px 3px;
+  font-size: 11px;
+  font-weight: bold;
+  background: #244637;
+  color: white;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background: #32644d;
+}
+
+.basket {
+  background: #151512;
+  border: 1px solid #514a3d;
+  border-radius: 15px;
+  padding: 15px;
+  margin-top: 35px;
+}
+
+.basket h2 {
+  font-size: 22px;
+  margin-bottom: 13px;
+}
+
+#basket-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.basket-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #38352e;
+  padding-bottom: 10px;
+}
+
+.basket-name {
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.basket-row > div:first-child > div:last-child {
+  font-size: 12px;
+  color: #c1beb6;
+}
+
+.basket-controls {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.quantity-btn {
+  border: 1px solid #625c4f;
+  background: #292720;
+  color: white;
+  border-radius: 6px;
+  width: 27px;
+  height: 27px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.basket-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 19px;
+  font-weight: bold;
+  margin: 18px 0;
+}
+
+.basket-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.checkout-btn,
+.clear-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 11px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.checkout-btn {
+  flex: 1;
+  background: #237448;
+  color: white;
+}
+
+.clear-btn {
+  background: #3a2926;
+  color: white;
+}
+
+.empty,
+.note {
+  color: #aaa69b;
+  font-size: 12px;
+}
+
+.note {
+  margin-top: 12px;
+}
+
+footer {
+  text-align: center;
+  color: #aaa69b;
+  padding: 20px 12px;
+  border-top: 1px solid #403b32;
+  font-size: 12px;
+}
+
+/* Slightly larger cards on tablets and computers */
+@media (min-width: 600px) {
+  main {
+    padding: 30px 20px 45px;
+  }
+
+  .menu-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+  }
+
+  .product img {
+    height: 150px;
+  }
+
+  .product-content {
+    padding: 12px;
+  }
+
+  .product h3 {
+    font-size: 17px;
+  }
+
+  .product p {
+    font-size: 13px;
+  }
+
+  .product-bottom {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .price {
+    font-size: 15px;
+  }
+
+  .add-btn {
+    width: auto;
+    padding: 9px 11px;
+    font-size: 12px;
+  }
+}
+
+/* Very narrow phones */
+@media (max-width: 320px) {
+  .menu-grid {
+    gap: 5px;
+  }
+
+  .product-content {
+    padding: 6px;
+  }
+
+  .product img {
+    height: 75px;
+  }
+
+  .product h3 {
+    font-size: 11px;
+  }
+
+  .price {
+    font-size: 11px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">Bloom Cafe</div>
+  <h1>Good food.<br>Good moments.</h1>
+  <p>Freshly prepared favourites, made for you.</p>
+</header>
+
+<main>
+  <section class="intro">
+    <h2>Explore our menu</h2>
+    <p>Choose your favourites and add them to your basket.</p>
+  </section>
+
+  <nav class="categories" aria-label="Menu categories">
+    <button class="active" onclick="showCategory('all', this)">All</button>
+    <button onclick="showCategory('Drinks', this)">Drinks</button>
+    <button onclick="showCategory('Breakfast', this)">Breakfast</button>
+    <button onclick="showCategory('Lunch', this)">Lunch</button>
+  </nav>
+
+  <div id="menu"></div>
+
+  <section class="basket" id="basket">
+    <h2>Your basket 🛒</h2>
+
+    <div id="basket-items">
+      <p class="empty">Your basket is empty.</p>
+    </div>
+
+    <div class="basket-total">
+      <span>Total</span>
+      <span id="total">R0.00</span>
+    </div>
+
+    <div class="basket-actions">
+      <button class="checkout-btn" onclick="checkout()">
+        Order on WhatsApp
+      </button>
+      <button class="clear-btn" onclick="clearBasket()">
+        Clear basket
+      </button>
+    </div>
+
+    <p class="note">
+      The cafe will confirm your order and collection or delivery details.
+    </p>
+  </section>
+</main>
+
+<footer>Bloom Cafe · Made fresh for you</footer>
+
+<script>
+const WHATSAPP_NUMBER = "27824772274";
+
+const products = [
+  {
+    id: 1,
+    name: "Iced Tea",
+    category: "Drinks",
+    price: 30,
+    description: "Refreshing chilled tea.",
+    image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 2,
+    name: "Cappuccino",
+    category: "Drinks",
+    price: 32,
+    description: "Espresso with steamed milk.",
+    image: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 3,
+    name: "Iced Coffee",
+    category: "Drinks",
+    price: 38,
+    description: "Chilled coffee served over ice.",
+    image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 4,
+    name: "Breakfast Toast",
+    category: "Breakfast",
+    price: 45,
+    description: "Toasted bread with tasty toppings.",
+    image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 5,
+    name: "Pancakes",
+    category: "Breakfast",
+    price: 42,
+    description: "Fluffy pancakes with sweet toppings.",
+    image: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 6,
+    name: "Beef Burger",
+    category: "Lunch",
+    price: 75,
+    description: "Juicy burger with fresh toppings.",
+    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 7,
+    name: "Chicken Wrap",
+    category: "Lunch",
+    price: 65,
+    description: "Chicken and fresh ingredients in a wrap.",
+    image: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=500&q=80"
+  }
+];
+
+const basket = {};
+
+function money(amount) {
+  return "R" + amount.toFixed(2);
+}
+
+function renderMenu(category = "all") {
+  const menu = document.getElementById("menu");
+  menu.innerHTML = "";
+
+  const categories = category === "all"
+    ? ["Drinks", "Breakfast", "Lunch"]
+    : [category];
+
+  categories.forEach(sectionName => {
+    const items = products.filter(
+      product => product.category === sectionName
+    );
+
+    if (!items.length) return;
+
+    const section = document.createElement("section");
+    section.className = "menu-section";
+
+    const heading = document.createElement("h2");
+    heading.textContent = sectionName;
+
+    const grid = document.createElement("div");
+    grid.className = "menu-grid";
+
+    items.forEach(product => {
+      const card = document.createElement("article");
+      card.className = "product";
+
+      const img = document.createElement("img");
+      img.src = product.image;
+      img.alt = product.name;
+      img.loading = "lazy";
+
+      // Try a general cafe photo if a product photo fails.
+      img.onerror = function() {
+        if (!this.dataset.fallbackTried) {
+          this.dataset.fallbackTried = "true";
+          this.src =
+            "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=500&q=80";
+        }
+      };
+
+      const content = document.createElement("div");
+      content.className = "product-content";
+
+      const name = document.createElement("h3");
+      name.textContent = product.name;
+
+      const description = document.createElement("p");
+      description.textContent = product.description;
+
+      const bottom = document.createElement("div");
+      bottom.className = "product-bottom";
+
+      const price = document.createElement("span");
+      price.className = "price";
+      price.textContent = money(product.price);
+
+      const button = document.createElement("button");
+      button.className = "add-btn";
+      button.textContent = "Add +";
+      button.onclick = () => addToBasket(product.id);
+
+      bottom.append(price, button);
+      content.append(name, description, bottom);
+      card.append(img, content);
+      grid.appendChild(card);
+    });
+
+    section.append(heading, grid);
+    menu.appendChild(section);
+  });
+}
+
+function showCategory(category, button) {
+  document.querySelectorAll(".categories button").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  button.classList.add("active");
+  renderMenu(category);
+}
+
+function addToBasket(id) {
+  basket[id] = (basket[id] || 0) + 1;
+  renderBasket();
+}
+
+function changeQuantity(id, amount) {
+  basket[id] = (basket[id] || 0) + amount;
+
+  if (basket[id] <= 0) {
+    delete basket[id];
+  }
+
+  renderBasket();
+}
+
+function clearBasket() {
+  Object.keys(basket).forEach(id => delete basket[id]);
+  renderBasket();
+}
+
+function renderBasket() {
+  const container = document.getElementById("basket-items");
+  container.innerHTML = "";
+
+  const ids = Object.keys(basket);
+  let total = 0;
+
+  if (ids.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "empty";
+    empty.textContent = "Your basket is empty.";
+    container.appendChild(empty);
+  }
+
+  ids.forEach(id => {
+    const product = products.find(item => item.id === Number(id));
+    if (!product) return;
+
+    const quantity = basket[id];
+    const subtotal = product.price * quantity;
+    total += subtotal;
+
+    const row = document.createElement("div");
+    row.className = "basket-row";
+
+    const details = document.createElement("div");
+
+    const name = document.createElement("div");
+    name.className = "basket-name";
+    name.textContent = product.name;
+
+    const amount = document.createElement("div");
+    amount.textContent = money(subtotal);
+
+    details.append(name, amount);
+
+    const controls = document.createElement("div");
+    controls.className = "basket-controls";
+
+    const minus = document.createElement("button");
+    minus.className = "quantity-btn";
+    minus.textContent = "−";
+    minus.setAttribute("aria-label", "Remove one " + product.name);
+    minus.onclick = () => changeQuantity(product.id, -1);
+
+    const count = document.createElement("span");
+    count.textContent = quantity;
+
+    const plus = document.createElement("button");
+    plus.className = "quantity-btn";
+    plus.textContent = "+";
+    plus.setAttribute("aria-label", "Add one " + product.name);
+    plus.onclick = () => changeQuantity(product.id, 1);
+
+    controls.append(minus, count, plus);
+    row.append(details, controls);
+    container.appendChild(row);
+  });
+
+  document.getElementById("total").textContent = money(total);
+}
+
+function checkout() {
+  const ids = Object.keys(basket);
+
+  if (!ids.length) {
+    alert("Please add something to your basket first.");
+    return;
+  }
+
+  let total = 0;
+  let message = "Hello Bloom Cafe! I'd like to place this order:\n\n";
+
+  ids.forEach(id => {
+    const product = products.find(item => item.id === Number(id));
+    if (!product) return;
+
+    const quantity = basket[id];
+    const subtotal = product.price * quantity;
+    total += subtotal;
+
+    message += quantity + " x " + product.name +
+      " - " + money(subtotal) + "\n";
+  });
+
+  message += "\nTotal: " + money(total);
+  message += "\n\nPlease confirm my order. Thank you!";
+
+  const url = "https://wa.me/" + WHATSAPP_NUMBER +
+    "?text=" + encodeURIComponent(message);
+
+  window.open(url, "_blank");
+}
+
+renderMenu();
+renderBasket();
+</script>
+
+</body>
+</html>
